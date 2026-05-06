@@ -7,37 +7,21 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
-<<<<<<< HEAD
-    "db:migrate": "npx prisma migrate dev",
-    "db:seed": "npx prisma db seed",
-    "db:studio": "npx prisma studio",
-    "db:reset": "npx prisma migrate reset"
-  },
-  "keywords": [
-    "express",
-    "uef"
-  ],
-  "author": "sonsoleslp",
-  "license": "MIT",
-  "dependencies": {
-    "@prisma/client": "^6.x.x",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "multer": "^2.1.1"
-  },
-  "devDependencies": {
-    "prisma": "^6.x.x"
-=======
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
     "db:reset": "prisma migrate reset"
->>>>>>> 8a2922143da715dcc4870e6cd82f2cdcf77f97a6
   },
   "prisma": {
     "seed": "node prisma/seed.js"
   },
-  "keywords": ["express", "nodejs", "backend", "api", "uef"],
+  "keywords": [
+    "express",
+    "nodejs",
+    "backend",
+    "api",
+    "uef"
+  ],
   "author": "vallusten",
   "license": "MIT",
   "dependencies": {
@@ -45,6 +29,7 @@
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "dotenv": "^17.4.2",
     "prisma": "^6.19.3"
   }
 }
