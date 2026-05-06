@@ -17,13 +17,11 @@ model User {
   @@map("users")
 }
 
-
-
 model Post {
-  id       Int       @id @default(autoincrement())
-  title    String    @db.VarChar(255)
-  date     DateTime
-  content  String    @db.Text
+id       Int       @id @default(autoincrement())
+  question String    @db.VarChar(255) // Was 'title'
+  answer   String    @db.Text         // Was 'content'
+  date     DateTime  @default(now())  // Added default so it doesn't crash on create
   keywords Keyword[]
   imageUrl String?   @db.VarChar(255)
   userId   Int
@@ -31,7 +29,6 @@ model Post {
   likes    Like[]
   @@map("posts")
 }
-
 
 model Keyword {
   id    Int    @id @default(autoincrement())
@@ -52,4 +49,3 @@ model Like {
   @@unique([userId, postId])
   @@map("likes")
 }
-

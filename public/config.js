@@ -3,7 +3,7 @@ const CONFIG = {
   ROUTES: {
     LOGIN: "/api/auth/login",
     REGISTER: "/api/auth/register",
-    POSTS: "/api/questions",
+    QUESTIONS: "/api/questions",
   },
   FIELDS: {
     LOGIN: ["email", "password"],
