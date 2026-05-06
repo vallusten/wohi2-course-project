@@ -1,11 +1,13 @@
 {
-  "name": "cms-demo-project",
+  "name": "backend-course-project",
   "version": "1.0.0",
-  "description": "Demo project",
-  "main": "index.js",
+  "description": "WOHI 2 project",
+  "main": "src/index.js",
+  "type": "commonjs",
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
+<<<<<<< HEAD
     "db:migrate": "npx prisma migrate dev",
     "db:seed": "npx prisma db seed",
     "db:studio": "npx prisma studio",
@@ -25,9 +27,24 @@
   },
   "devDependencies": {
     "prisma": "^6.x.x"
+=======
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset"
+>>>>>>> 8a2922143da715dcc4870e6cd82f2cdcf77f97a6
   },
   "prisma": {
     "seed": "node prisma/seed.js"
   },
-  "type": "commonjs"
+  "keywords": ["express", "nodejs", "backend", "api", "uef"],
+  "author": "vallusten",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "prisma": "^6.19.3"
+  }
 }
