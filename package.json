@@ -20,7 +20,8 @@
   "dependencies": {
     "@prisma/client": "^6.x.x",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "multer": "^2.1.1"
   },
   "devDependencies": {
     "prisma": "^6.x.x"
