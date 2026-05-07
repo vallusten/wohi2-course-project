@@ -263,7 +263,12 @@ async function loadQuestionDetail(qId) {
         }
         ${
           isOwner
-            ? `<div class="question-actions detail-actions">
+          
+            ? `
+              <div class="question-stats">
+              <span>Attempts: ${q.attemptCount}</span>
+              <span>Correct: ${q.correctAttempts}</span>
+              </div><div class="question-actions detail-actions">
                 <button class="btn btn-edit" id="detail-edit-btn">Edit</button>
                 <button class="btn btn-delete" id="detail-delete-btn">Delete</button>
               </div>`
@@ -413,7 +418,7 @@ async function playQuestion(qId) {
         } else {
           resultEl.innerHTML = `
             <div class="play-result incorrect">
-              Incorrect! The answer was: <strong>${result.correctAnswer}</strong>
+              Incorrect! The answer was: <strong>${result.answer}</strong>
             </div>`;
         }
       } catch (err) {
