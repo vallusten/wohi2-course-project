@@ -5,6 +5,16 @@ const authenticate = require("../middleware/auth");
 const isOwner = require("../middleware/isOwner");
 const multer = require("multer");
 const path = require('path');
+const { NotFoundError, ValidationError } = require("../lib/errors");
+
+const { z } = require("zod");
+
+const PostInput = z.object({
+  question: z.string().min(1, "Question is required"),
+  answer: z.string().min(1, "Answer is required"),
+  keywords: z.union([ z.string(), z.array(z.string())]).optional(),});
+
+
 
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "..", "..", "public", "uploads"),
@@ -18,9 +28,17 @@ const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith("image/")) cb(null, true);
-    else cb(new Error("Only image files are allowed"));
+    else cb(new ValidationError("Only image files are allowed"));
   },
   limits: { fileSize: 5 * 1024 * 1024 },
+});
+
+router.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError ||
+      err?.message === "Only image files are allowed") {
+    return res.status(400).json({ msg: err.message });
+  }
+  next(err); // pass through to global handler
 });
 
 router.use(authenticate);
@@ -108,18 +126,19 @@ router.get("/:postId", async (req, res) => {
   });
 
   if (!post) {
-    return res.status(404).json({ message: "Question not found" });
+    throw new NotFoundError("Question not found");
   }
 
   res.json(formatPost(post, userId));
 });
 
 // POST /questions
-router.post("/", upload.single("image"), async (req, res) => {
-  const { question, answer, keywords } = req.body;
+/*router.post("/:postId/play", async (req, res) => {
+  
+  const {question, answer, keywords,} = data;
 
   if (!question || !answer) {
-    return res.status(400).json({ msg: "question and answer are mandatory" });
+    throw new ValidationError("Question and answer are mandatory");
   }
 
   const keywordsArray = keywords
@@ -150,7 +169,38 @@ router.post("/", upload.single("image"), async (req, res) => {
   });
 
   res.status(201).json(formatPost(newPost));
+});*/
+router.post("/:postId/play", async (req, res) => {
+  const postId = Number(req.params.postId);
+  const userId = req.user.userId || req.user.id;
+  const { answer } = req.body;
+
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+  });
+
+  if (!post) {
+    throw new NotFoundError("Question not found");
+  }
+
+  const isCorrect =
+    post.answer.trim().toLowerCase() ===
+    String(answer || "").trim().toLowerCase();
+
+  await prisma.attempt.create({
+    data: {
+      userId,
+      postId,
+      isCorrect,
+    },
+  });
+
+  res.json({
+    correct: isCorrect,
+    answer: post.answer,
+  });
 });
+
 
 // PUT /questions
 router.put("/:postId", upload.single("image"), isOwner, async (req, res) => {
@@ -158,7 +208,7 @@ router.put("/:postId", upload.single("image"), isOwner, async (req, res) => {
   const { question, answer, keywords } = req.body;
 
   if (!question || !answer) {
-    return res.status(400).json({ msg: "question and answer are mandatory" });
+    throw new ValidationError("Question and answer are mandatory");
   }
 
   const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
@@ -201,7 +251,7 @@ router.delete("/:postId", isOwner, async (req, res) => {
   });
 
   if (!post) {
-    return res.status(404).json({ message: "Question not found" });
+    throw new NotFoundError("Question not found");
   }
 
   await prisma.post.delete({ where: { id: postId } });
@@ -212,17 +262,19 @@ router.delete("/:postId", isOwner, async (req, res) => {
 });
 
 // POST /api/questions
-router.post("/:postId/play", async (req, res) => {
+/*router.post("/", upload.single("image"), async (req, res) => {
+  const data = PostInput.parse(req.body);
   const postId = Number(req.params.postId);
   const userId = req.user.userId || req.user.id;
   const { answer } = req.body; 
+  
 
   const post = await prisma.post.findUnique({
     where: { id: postId }
   });
 
   if (!post) {
-    return res.status(404).json({ message: "Question not found" });
+    throw new NotFoundError("Question not found");
   }
 
   const isCorrect = post.answer.trim().toLowerCase() === String(answer || "").trim().toLowerCase();
@@ -239,6 +291,46 @@ router.post("/:postId/play", async (req, res) => {
     correct: isCorrect,
     answer: post.answer 
   });
+});*/
+router.post("/", upload.single("image"), async (req, res) => {
+  const data = PostInput.parse(req.body);
+
+  const { question, answer, keywords } = data;
+
+  const keywordsArray = keywords
+    ? String(keywords)
+        .split(",")
+        .map(k => k.trim().toLowerCase())
+        .filter(Boolean)
+    : [];
+
+  const imageUrl = req.file
+    ? `/uploads/${req.file.filename}`
+    : null;
+
+  const newPost = await prisma.post.create({
+    data: {
+      question,
+      answer,
+      imageUrl,
+      userId: req.user.userId || req.user.id,
+      keywords: {
+        connectOrCreate: keywordsArray.map((kw) => ({
+          where: { name: kw },
+          create: { name: kw },
+        })),
+      },
+    },
+    include: {
+      keywords: true,
+      user: true,
+      attempts: true,
+    },
+  });
+
+  res.status(201).json(
+    formatPost(newPost, req.user.userId || req.user.id)
+  );
 });
 
 module.exports = router;
