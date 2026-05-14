@@ -49,4 +49,4 @@ router.post("/login", async (req, res) => {
   res.json({ token });
 });
 
-module.exports = router; // This should be the last line
+module.exports = router;
