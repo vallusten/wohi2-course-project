@@ -6,6 +6,7 @@ const isOwner = require("../middleware/isOwner");
 const multer = require("multer");
 const path = require('path');
 const { NotFoundError, ValidationError } = require("../lib/errors");
+const fs = require("fs");
 
 const { z } = require("zod");
 
@@ -16,11 +17,28 @@ const PostInput = z.object({
 
 
 
+const uploadDir = path.join(
+  __dirname,
+  "..",
+  "..",
+  "public",
+  "uploads"
+);
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
-  destination: path.join(__dirname, "..", "..", "public", "uploads"),
+  destination: uploadDir,
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
-    cb(null, `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`);
+    cb(
+      null,
+      `${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2, 8)}${ext}`
+    );
   },
 });
 
@@ -38,7 +56,7 @@ router.use((err, req, res, next) => {
       err?.message === "Only image files are allowed") {
     return res.status(400).json({ msg: err.message });
   }
-  next(err); // pass through to global handler
+  next(err); 
 });
 
 router.use(authenticate);
@@ -132,44 +150,7 @@ router.get("/:postId", async (req, res) => {
   res.json(formatPost(post, userId));
 });
 
-// POST /questions
-/*router.post("/:postId/play", async (req, res) => {
-  
-  const {question, answer, keywords,} = data;
 
-  if (!question || !answer) {
-    throw new ValidationError("Question and answer are mandatory");
-  }
-
-  const keywordsArray = keywords
-  ? String(keywords)
-      .split(",")
-      .map(k => k.trim().toLowerCase())
-      .filter(Boolean)
-  : [];
-  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-
-  const newPost = await prisma.post.create({
-    data: {
-      question, 
-      answer,
-      imageUrl,
-      userId: req.user.userId || req.user.id,
-      keywords: {
-        connectOrCreate: keywordsArray.map((kw) => ({
-          where: { name: kw }, create: { name: kw },
-        })), 
-      },
-    },
-    include: {
-    keywords: true,
-    user: true,
-    attempts: true,
-},
-  });
-
-  res.status(201).json(formatPost(newPost));
-});*/
 router.post("/:postId/play", async (req, res) => {
   const postId = Number(req.params.postId);
   const userId = req.user.userId || req.user.id;
