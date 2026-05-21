@@ -11,6 +11,11 @@ const app = express();
 app.use(pinoHttp({logger, autoLogging:{ignore:(r)=>r.url.startsWith("/uploads")}}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
+
+app.get("/", (req, res) => {
+  res.send("Backend is running");
+});
+
 app.use("/api/auth", authRouter);
 app.use("/api/questions", postsRouter);
 app.use((req, res) => res.status(404).json({ message: "Not found" }));
