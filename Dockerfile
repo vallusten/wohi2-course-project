@@ -5,12 +5,12 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
-COPY . .
-
+COPY prisma ./prisma
 RUN npx prisma generate
 
-ENV NODE_ENV=production
+COPY . .
 
+ENV NODE_ENV=production
 EXPOSE 8080
 
-CMD npx prisma migrate deploy && npm start
+CMD ["sh", "-c", "npx prisma migrate deploy && npm start"]
