@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const SECRET = process.env.JWT_SECRET;
 
 const { UnauthorizedError, ForbiddenError } = require("../lib/errors");
+const { captchas } = require("./captcha");
 
 function authenticate(req, res, next) {
   const h = req.headers.authorization;
