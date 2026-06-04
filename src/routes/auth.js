@@ -15,19 +15,7 @@ const { ValidationError, ConflictError, UnauthorizedError }
 // POST /api/auth/register
 router.post("/register", async (req, res, next) => {
   try {
-  const { email, password, name, captchaId, captchaAnswer,} = req.body;
-  const expected = captchas.get(captchaId);
-
-if (
-  !expected ||
-  expected.toLowerCase() !==
-    String(captchaAnswer).toLowerCase()
-) {
-  throw new ValidationError("Invalid captcha");
-}
-
-captchas.delete(captchaId);
-
+  const { email, password, name } = req.body;
   if (!email || !password || !name)
     throw new ValidationError("email, password and name are required");
 

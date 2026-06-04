@@ -48,7 +48,6 @@ function showAuth() {
 function renderAuthForm() {
   const fields = isRegisterMode ? CONFIG.FIELDS.REGISTER : CONFIG.FIELDS.LOGIN;
   const title = isRegisterMode ? "Sign Up" : "Log In";
-  
   const switchText = isRegisterMode
     ? 'Already have an account? <a href="#" id="switch-mode">Log in</a>'
     : 'Don\'t have an account? <a href="#" id="switch-mode">Sign up</a>';
@@ -67,25 +66,7 @@ function renderAuthForm() {
           </div>`;
         })
         .join("")}
-      ${
-  isRegisterMode
-    ? `
-    <div id="captcha-container"></div>
-
-    <div class="form-group">
-      <label for="captcha-answer">Captcha</label>
-      <input
-        type="text"
-        id="captcha-answer"
-        placeholder="Enter captcha text"
-        required
-      />
-    </div>
-    `
-    : ""
-}
-
-<button type="submit">${title}</button>
+      <button type="submit">${title}</button>
     </form>
     <p class="switch-text">${switchText}</p>
     <p id="auth-error" class="error"></p>
@@ -112,7 +93,7 @@ async function loadCaptcha() {
   captchaId = data.captchaId;
 
   document.getElementById("captcha-container").innerHTML =
-    data.svg;
+    data.captcha;
 }
 
 async function handleAuth(e) {
@@ -127,10 +108,6 @@ async function handleAuth(e) {
   fields.forEach((f) => {
     body[f] = document.getElementById(f).value;
   });
-  if (isRegisterMode) {
-  body.captcha = document.getElementById("captcha-answer").value;
-  body.captchaId = captchaId;
-  }
 
   try {
     const data = await apiFetch(route, {
