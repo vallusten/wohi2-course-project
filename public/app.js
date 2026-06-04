@@ -106,7 +106,7 @@ if (isRegisterMode) {
 let captchaId = null;
 
 async function loadCaptcha() {
-  const response = await fetch("/api/captcha");
+  const response = await fetch("/api/auth/captcha");
   const data = await response.json();
 
   captchaId = data.captchaId;
