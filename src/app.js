@@ -6,11 +6,12 @@ const postsRouter = require("./routes/questions");
 const authRouter  = require("./routes/auth");
 const errorHandler = require("./middleware/errorHandler");
 const { ZodError } = require("zod");
-
+const { router: captchaRouter, } = require("./routes/captcha");
 const app = express();
 app.use(pinoHttp({logger, autoLogging:{ignore:(r)=>r.url.startsWith("/uploads")}}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
+app.use("/api/captcha", captchaRouter);
 
 app.get("/", (req, res) => {
   res.send("Backend is running");

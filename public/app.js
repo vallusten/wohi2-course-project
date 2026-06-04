@@ -112,7 +112,7 @@ async function loadCaptcha() {
   captchaId = data.captchaId;
 
   document.getElementById("captcha-container").innerHTML =
-    data.captcha;
+    data.svg;
 }
 
 async function handleAuth(e) {
