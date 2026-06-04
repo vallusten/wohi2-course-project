@@ -1,0 +1,53 @@
+[33m144b1aa[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Revert "Added captcha"
+[33mf8b27ae[m Revert "Trying to fix crash"
+[33m71c901c[m Revert "idk"
+[33m6dec778[m idk
+[33m7a4a3ee[m idk
+[33mfeb3e71[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Trying to fix crash
+[33mab6efe9[m Added captcha
+[33mf50fb16[m .gitignore not working
+[33m91593bc[m Fix keyword migration
+[33m5786529[m Add keyword relation
+[33m840a328[m Fix uploads
+[33m492d52a[m Cleaned up index.js
+[33mbe07288[m Fixed Railway Docker CMD
+[33m5989a8d[m Simplify Railway Docker CMD
+[33m0859f5a[m Debugging in index.js again
+[33m3c2634c[m Fix Railway exposed port
+[33m31d23a0[m Bugfixing app.js again
+[33m1b5f095[m Deleted debugging in index.js
+[33ma615b17[m Bugfixing in index.js
+[33mee0626d[m Update app.js again
+[33mee0fc9c[m Update app.js
+[33mc21950b[m Revert index.js
+[33me6c3195[m Delete node_modules directory
+[33m794f06b[m Fix Railway server binding
+[33m81a169d[m Added bcrypt dependency
+[33ma72ad2d[m Add jsonwebtoken dependency
+[33m423b36a[m Add Docker deployment files
+[33mbc1003f[m Merge branch 'main' of https://github.com/vallusten/wohi2-course-project
+[33m39c2686[m Add .env.example
+[33m6d53a83[m Edits
+[33m619f13e[m Update auth.js
+[33md5d874f[m Delete node_modules directory
+[33m1530a6d[m Added testing, logging and error handling
+[33m5dcfe33[m Added attempts and fixed keyword search & other bugs
+[33me3f455c[m Fixed the project. Need to figure out node_modules reappearing every commit.
+[33mfc770d9[m Remove node_modules from repo
+[33m4269898[m Tried to fix my repo
+[33m961c8c0[m Delete node_modules directory
+[33meb673aa[m Clean repo: remove node_modules and ignored files
+[33m1dc74aa[m Resolve merge conflict in package.json
+[33me33ded6[m Added UI & other features
+[33m8a29221[m Added authentication
+[33m6e21363[m Creating authentication
+[33mb32867c[m Update Prisma setup
+[33m11d1be2[m Update Prisma setup
+[33m1e978b0[m Remove node_modules from repo
+[33m35e78a6[m Adding PRISMA
+[33m3977cee[m Remove node_modules from repo
+[33m78754c2[m Fixed naming issues with the API
+[33m513dca0[m Fixed posts API
+[33mc762c05[m Creating posts API
+[33ma4daf57[m Remove node_modules from repo
+[33m6b477b3[m Initial commit: Express server with hello world route
